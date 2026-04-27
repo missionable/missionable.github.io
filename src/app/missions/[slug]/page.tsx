@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { missions } from '@/lib/data';
 import type { Difficulty } from '@/lib/types';
+import { TaskList } from '@/components/task-list';
 
 export function generateStaticParams() {
   return missions.map((m) => ({ slug: m.slug }));
@@ -39,6 +40,7 @@ export default async function MissionDetailPage({ params }: { params: Promise<{ 
       <div className="grid gap-10 lg:grid-cols-3">
         {/* Main content */}
         <div className="lg:col-span-2 space-y-10">
+          {/* Header */}
           <div>
             <div className="flex flex-wrap items-center gap-3 mb-4">
               <DifficultyBadge difficulty={mission.difficulty} />
@@ -60,27 +62,22 @@ export default async function MissionDetailPage({ params }: { params: Promise<{ 
             </div>
           </section>
 
+          {/* Environment Setup */}
+          <section>
+            <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
+              <span className="text-[var(--color-green)]">02</span> Environment Setup
+            </h2>
+            <div className="rounded-xl border border-[var(--color-purple)]/20 bg-[var(--color-purple)]/5 p-6">
+              <p className="text-sm text-slate-300 leading-relaxed whitespace-pre-line">{mission.setup}</p>
+            </div>
+          </section>
+
           {/* Tasks */}
           <section id="tasks">
             <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
-              <span className="text-[var(--color-green)]">02</span> Mission Tasks
+              <span className="text-[var(--color-green)]">03</span> Mission Tasks
             </h2>
-            <div className="space-y-4">
-              {mission.tasks.map((task, i) => (
-                <div
-                  key={task.id}
-                  className="flex gap-4 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5 hover:border-[var(--color-green)]/30 transition-colors"
-                >
-                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[var(--color-green)]/10 border border-[var(--color-green)]/20 text-sm font-bold text-[var(--color-green)]">
-                    {String(i + 1).padStart(2, '0')}
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-white">{task.title}</h3>
-                    <p className="mt-1 text-sm text-slate-500 leading-relaxed">{task.description}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
+            <TaskList tasks={mission.tasks} slug={mission.slug} />
           </section>
 
           {/* Job Relevance */}
@@ -96,16 +93,37 @@ export default async function MissionDetailPage({ params }: { params: Promise<{ 
 
         {/* Sidebar */}
         <div className="space-y-6">
-          {/* CTA Card */}
-          <div className="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6 sticky top-24">
-            <h3 className="font-semibold text-white mb-4">Ready to start?</h3>
-            <a href="#tasks" className="block w-full rounded-lg bg-[var(--color-green)] py-3 text-sm font-semibold text-[var(--color-base)] hover:bg-[var(--color-green-dim)] transition-colors mb-3 text-center">
-              Start Mission
-            </a>
-            <p className="text-xs text-slate-600 text-center">Free forever. No account required.</p>
+          <div className="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6 sticky top-24 space-y-6">
+
+            {/* CTA */}
+            <div>
+              <h3 className="font-semibold text-white mb-3">Ready to start?</h3>
+              <a
+                href="#tasks"
+                className="block w-full rounded-lg bg-[var(--color-green)] py-3 text-sm font-semibold text-[var(--color-base)] hover:bg-[var(--color-green-dim)] transition-colors text-center"
+              >
+                Start Mission ↓
+              </a>
+              <p className="text-xs text-slate-600 text-center mt-2">Free forever. No account required.</p>
+            </div>
+
+            {/* You'll Need */}
+            <div className="pt-5 border-t border-[var(--color-border)]">
+              <h4 className="text-xs font-semibold uppercase tracking-widest text-slate-500 mb-3">You&apos;ll Need</h4>
+              <ul className="space-y-2">
+                {mission.prerequisites.map((req) => (
+                  <li key={req} className="flex items-start gap-2 text-sm text-slate-400">
+                    <svg className="h-4 w-4 text-[var(--color-purple)] shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                    </svg>
+                    {req}
+                  </li>
+                ))}
+              </ul>
+            </div>
 
             {/* Tech Stack */}
-            <div className="mt-6 pt-5 border-t border-[var(--color-border)]">
+            <div className="pt-5 border-t border-[var(--color-border)]">
               <h4 className="text-xs font-semibold uppercase tracking-widest text-slate-500 mb-3">Tools & Tech Stack</h4>
               <div className="flex flex-wrap gap-1.5">
                 {mission.tools.map((tool) => (
@@ -115,7 +133,7 @@ export default async function MissionDetailPage({ params }: { params: Promise<{ 
             </div>
 
             {/* Skills */}
-            <div className="mt-5 pt-5 border-t border-[var(--color-border)]">
+            <div className="pt-5 border-t border-[var(--color-border)]">
               <h4 className="text-xs font-semibold uppercase tracking-widest text-slate-500 mb-3">Skills You&apos;ll Gain</h4>
               <ul className="space-y-2">
                 {mission.skills.map((skill) => (

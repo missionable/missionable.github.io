@@ -1,9 +1,16 @@
 export type Difficulty = 'Beginner' | 'Intermediate' | 'Advanced';
 
+export interface Resource {
+  label: string;
+  url: string;
+}
+
 export interface Task {
   id: string;
   title: string;
   description: string;
+  hint?: string;
+  resources?: Resource[];
 }
 
 export interface Mission {
@@ -15,6 +22,8 @@ export interface Mission {
   duration: string;
   category: string;
   overview: string;
+  prerequisites: string[];
+  setup: string;
   tasks: Task[];
   skills: string[];
   jobRelevance: string;
