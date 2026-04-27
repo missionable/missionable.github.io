@@ -61,7 +61,7 @@ export default async function MissionDetailPage({ params }: { params: Promise<{ 
           </section>
 
           {/* Tasks */}
-          <section>
+          <section id="tasks">
             <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
               <span className="text-[var(--color-green)]">02</span> Mission Tasks
             </h2>
@@ -99,9 +99,9 @@ export default async function MissionDetailPage({ params }: { params: Promise<{ 
           {/* CTA Card */}
           <div className="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6 sticky top-24">
             <h3 className="font-semibold text-white mb-4">Ready to start?</h3>
-            <button className="w-full rounded-lg bg-[var(--color-green)] py-3 text-sm font-semibold text-[var(--color-base)] hover:bg-[var(--color-green-dim)] transition-colors mb-3">
+            <a href="#tasks" className="block w-full rounded-lg bg-[var(--color-green)] py-3 text-sm font-semibold text-[var(--color-base)] hover:bg-[var(--color-green-dim)] transition-colors mb-3 text-center">
               Start Mission
-            </button>
+            </a>
             <p className="text-xs text-slate-600 text-center">Free forever. No account required.</p>
 
             {/* Tech Stack */}
